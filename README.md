@@ -1,6 +1,8 @@
 # Run Algolia Search MCP Server on ChatGPT / OpenAI
 
-## Using Python on your machine
+2 options for insallation: regular Python or Docker
+
+## 1.a - Install using Python on your machine
 
 ### Install
 
@@ -26,7 +28,23 @@ MCP_LOG_LEVEL=info
 fastmcp run server.py:mcp
 ```
 
-### Introspect the MCP Server
+## 1.b - Install using Docker Compose
+
+Simply run the command
+
+```
+docker compose up
+```
+
+It will start the docker image, and expose the port 8080 to your host
+
+http://localhost:8080/mcp
+or
+http://127.0.0.1:8080/mcp
+or
+http://0.0.0.0:8080/mcp
+
+## 2 - Introspect the MCP Server
 
 ```
 npx @modelcontextprotocol/inspector
@@ -41,7 +59,7 @@ You can use it to test the connection with
 
 Where host, port and path can be changed in the MCP Server config file (.env)
 
-### Run ngrok for tunneling
+## 3 - Run ngrok for tunneling
 
 ```
 ngrok http 8080
@@ -51,7 +69,7 @@ Nb: `8080` can be changed in the MCP Server config file (.env)
 
 It will give you the HTTPS address to allow ChatGPT to connect to your local machine
 
-### Add Algolia Search MCP Server to ChatGPT
+## 4 - Add Algolia Search MCP Server to ChatGPT
 
 1. Go to the ChatGPT Playground for prompts
 
@@ -122,40 +140,3 @@ Nb: the index is for now in FRENCH
 ![Run](images/run.png)
 
 **`voilà`**
-
-## Using Docker Compose
-
-### Build and Run
-
-Run the command
-
-```
-docker compose up
-```
-
-It will start the docker image, and expose the port 8080 to your host
-http://localhost:8080/mcp
-or
-http://127.0.0.1:8080/mcp
-or
-http://0.0.0.0:8080/mcp
-
-### Run the inspector
-
-It will run the inspector on your local machine
-
-```
-npx @modelcontextprotocol/inspector
-```
-
-Then use the parameters
-
-- Transport Type: `Streamable HTTP`
-- URL: `http://127.0.0.1:8080/mcp`
-- Authentication: **API Key / Auth token**
-  eg. Use your `APP_ID:API_KEY` like `SPLFJWX0K4:your_api_key`
-
-Continue the same configuration described for the Local Python
-
-- ngrok tunneling
-- Add Algolia Search MCP Server to ChatGPT
