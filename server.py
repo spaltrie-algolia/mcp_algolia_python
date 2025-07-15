@@ -44,6 +44,8 @@ async def algolia_search(
         client = SearchClientSync(ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY)
 
     ALGOLIA_INDEX_NAME = algolia_index_name
+    attributes_to_retrieve_param = [x.strip() for x in attributes_to_retrieve.split(',')] if attributes_to_retrieve else ["*"]
+    print ('attributes_to_retrieve_param', attributes_to_retrieve_param)
 
     response = client.search_single_index(
         index_name=ALGOLIA_INDEX_NAME,
@@ -51,8 +53,9 @@ async def algolia_search(
             "query": query,
             "filters": filters,
             "hitsPerPage": hits_per_page,
-            "attributesToRetrieve": attributes_to_retrieve.split(",") if attributes_to_retrieve else ["*"],
+            "attributesToRetrieve": attributes_to_retrieve_param,
         })
+    print("hits=>", response.hits)
     return response.hits if response.hits else "No results found."  # TODO: better handling no results
 
 
