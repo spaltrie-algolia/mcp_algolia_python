@@ -1,0 +1,2 @@
+algoliasearch~=4.22.1
+fastmcp~=2.10.5
