@@ -31,21 +31,22 @@ async def algolia_search(
     headers = get_http_headers(include_all=True)
     # print("headers= ", headers)
     authorization = headers.get("authorization")
+    
     authorization_split = authorization.replace("Bearer ", "").split(":")
     algolia_app_id = authorization_split[0]
     algolia_api_key = authorization_split[1]
     # print(f"authorization split= ", authorization_split)
     # TODO: Store the client context as a memory map for each client session
     global ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY, ALGOLIA_INDEX_NAME, client
-    if (not ALGOLIA_APPLICATION_ID or not ALGOLIA_API_KEY or 
-        ALGOLIA_APPLICATION_ID!= algolia_app_id or ALGOLIA_API_KEY!=algolia_api_key):
+    if (not ALGOLIA_APPLICATION_ID or not ALGOLIA_API_KEY or
+        ALGOLIA_APPLICATION_ID != algolia_app_id or ALGOLIA_API_KEY != algolia_api_key):
         ALGOLIA_APPLICATION_ID = algolia_app_id
         ALGOLIA_API_KEY = algolia_api_key
         client = SearchClientSync(ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY)
 
     ALGOLIA_INDEX_NAME = algolia_index_name
     attributes_to_retrieve_param = [x.strip() for x in attributes_to_retrieve.split(',')] if attributes_to_retrieve else ["*"]
-    print ('attributes_to_retrieve_param', attributes_to_retrieve_param)
+    print('attributes_to_retrieve_param', attributes_to_retrieve_param)
 
     response = client.search_single_index(
         index_name=ALGOLIA_INDEX_NAME,

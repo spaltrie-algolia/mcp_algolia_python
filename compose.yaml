@@ -1,0 +1,23 @@
+version: '3.11'
+
+services:
+  fastmcp-algolia-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastmcp_algolia_container
+    ports:
+      - "8080:8080"
+      - "6274:6274"
+      - "6277:6277"
+    environment:
+    - MCP_HOST=0.0.0.0
+    - MCP_PORT=8080
+    - MCP_PATH=/mcp
+    - MCP_TRANSPORT=http    
+    command: fastmcp run server.py:mcp
+
+networks:
+  my-network:
+    # driver: bridge  
+
