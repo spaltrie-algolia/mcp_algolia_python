@@ -11,7 +11,7 @@ services:
       - "6274:6274"
       - "6277:6277"
     environment:
-    - MCP_HOST=0.0.0.0
+    - MCP_HOST=0.0.0.0 # important to bind on this to allow external access
     - MCP_PORT=8080
     - MCP_PATH=/mcp
     - MCP_TRANSPORT=http    
