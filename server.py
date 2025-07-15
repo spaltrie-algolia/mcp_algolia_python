@@ -39,7 +39,8 @@ async def algolia_search(
     # TODO: Store the client context as a memory map for each client session
     global ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY, ALGOLIA_INDEX_NAME, client
     if (not ALGOLIA_APPLICATION_ID or not ALGOLIA_API_KEY or
-        ALGOLIA_APPLICATION_ID != algolia_app_id or ALGOLIA_API_KEY != algolia_api_key):
+            ALGOLIA_APPLICATION_ID != algolia_app_id or
+            ALGOLIA_API_KEY != algolia_api_key):
         ALGOLIA_APPLICATION_ID = algolia_app_id
         ALGOLIA_API_KEY = algolia_api_key
         client = SearchClientSync(ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY)
