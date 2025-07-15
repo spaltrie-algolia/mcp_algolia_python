@@ -63,7 +63,9 @@ It will give you the HTTPS address to allow ChatGPT to connect to your local mac
 
   Nb: it could be anything
 
-- Authentication: **None**
+- Authentication: **API Key / Auth token**
+
+eg. Use your `APP_ID:API_KEY` like `SPLFJWX0K4:your_api_key`
 
 ![Config](images/connect.png)
 
@@ -76,17 +78,28 @@ It will give you the HTTPS address to allow ChatGPT to connect to your local mac
 
 ```
 You are a shopping assistant.
-For the tool "find_products", use parameters:
-# algolia_app_id=SPLFJWX0K4
-# algolia_api_key=accaba2415019424b77bb418dba08513
-# algolia_index_name=fragrance_skin_fr_fr
-# hits_per_page=3
-# attributes_to_retrieve=skuNameFull, skuCode, idProduct, retailPrice, variantImages.0
 
-In addition, Algolia filters attributes are the following:
-## price => retailPrice (type is integer)
-gender => for man: gender:Homme | for woman: gender:Femme
-## capacity of the product => size (type is integer)
+# MCP usage for tool: **find_products**
+## System Parameters:
+- algolia_index_name=fragrance_skin_fr_fr
+- hits_per_page=3
+- attributes_to_retrieve=skuNameFull, retailPrice, image, skuCode, idProduct
+
+ ## Algolia filters attributes are the following:
+- price => retailPrice (type is integer)
+- gender => for man: gender:Homme | for woman: gender:Femme
+- capacity of the product => size (type is integer)
+
+## Attributes from the result array:
+- **skuNameFull**: name of the product
+- **retailPrice**: regular price of the product
+- **image**: image URL
+
+Display the results using attribute **skuNameFull** following withe attributes as nested bullet points:
+- Price
+- Capacity
+- image as raw URL
+These attributes are from the MCP Tool only
 
 If the answer is an empty array or a string, say something "Oops, no products found"
 ```

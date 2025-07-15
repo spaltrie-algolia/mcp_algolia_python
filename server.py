@@ -4,6 +4,7 @@ from algoliasearch.search.models import Hit
 from pydantic import Field
 from dotenv import load_dotenv
 import os
+from fastmcp.server.dependencies import get_http_headers
 
 # Global variables to hold Algolia configuration: TODO: consider using MCP context variables or a config file
 ALGOLIA_APPLICATION_ID = None
@@ -24,13 +25,20 @@ async def algolia_search(
     # Parameters for system prompt
     hits_per_page: int = Field(default=3, description="#products per page, Only configurable using system parameters"),
     attributes_to_retrieve: str = Field(default="*", description="Only configurable using system parameters"),
-    algolia_app_id: str = Field(default=None, description="Algolia Application ID, only configurable using system parameters"),
-    algolia_api_key: str = Field(default=None, description="Algolia API Key, only configurable using system parameters"),
     algolia_index_name: str = Field(default=None, description="Algolia Index Name, only configurable using system parameters"),
 ) -> list[Hit] | str:
     """Return hits from Algolia search."""
+    headers = get_http_headers(include_all=True)
+    # print("headers= ", headers)
+    authorization = headers.get("authorization")
+    authorization_split = authorization.replace("Bearer ", "").split(":")
+    algolia_app_id = authorization_split[0]
+    algolia_api_key = authorization_split[1]
+    # print(f"authorization split= ", authorization_split)
+    # TODO: Store the client context as a memory map for each client session
     global ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY, ALGOLIA_INDEX_NAME, client
-    if (not ALGOLIA_APPLICATION_ID or not ALGOLIA_API_KEY):
+    if (not ALGOLIA_APPLICATION_ID or not ALGOLIA_API_KEY or 
+        ALGOLIA_APPLICATION_ID!= algolia_app_id or ALGOLIA_API_KEY!=algolia_api_key):
         ALGOLIA_APPLICATION_ID = algolia_app_id
         ALGOLIA_API_KEY = algolia_api_key
         client = SearchClientSync(ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY)
